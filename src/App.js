@@ -1,23 +1,28 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState, useEffect } from 'react';
+import ListUsers from './components/ListUsers'
 
 function App() {
+
+  const [users, setUsers] = useState([])
+
+  const loadUsers = async () => {
+    const res = await fetch('https://api.github.com/users')
+    const data = await res.json()
+    setUsers(data)
+    console.log(data)
+  }
+
+  useEffect(() => {
+    loadUsers()
+  },[])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <header className="App-header">Github Users</header>
+      <div className="content">
+        <ListUsers users={users} />
+      </div>
     </div>
   );
 }
